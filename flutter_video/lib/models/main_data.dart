@@ -23,6 +23,9 @@ class MainDataModel {
   //动漫
   List<VideoModel> cartoonModelList = [];
 
+  //更多列表
+  List<String> moreUrlList = [];
+
 
 
   MainDataModel.formHTML(String html) {
@@ -52,26 +55,31 @@ class MainDataModel {
     
     
     var videos = document.getElementsByClassName('stui-vodlist');
-    
-    parseVideoModel(hotModelList, videos[0]);
-    parseVideoModel(movieModelList, videos[1]);
-    parseVideoModel(tvModelList, videos[2]);
-    parseVideoModel(showModelList, videos[3]);
-    parseVideoModel(cartoonModelList, videos[4]);
+
+    hotModelList = parseVideoModel(videos[0]);
+    movieModelList = parseVideoModel(videos[1]);
+    tvModelList = parseVideoModel(videos[2]);
+    showModelList = parseVideoModel(videos[3]);
+    cartoonModelList = parseVideoModel(videos[4]);
+
+    var moreElements = document.getElementsByClassName('more');
+    moreUrlList = moreElements.map((element) {
+      return element.attributes['href'];
+    }).toList();
+
   }
   
   
   //解析视频HTML
-  void parseVideoModel(List<VideoModel> list, Element element) {
+  List<VideoModel> parseVideoModel(Element element) {
     var videos = element.getElementsByClassName('stui-vodlist__thumb');
-    videos.forEach((element) {
+    return videos.map((element) {
       var videoUrl = element.attributes['href'];
       var videoImage = element.attributes['data-original'];
       var videoTitle = element.attributes['title'];
       var videoInfo = element.text.trim();
-
-      list.add(VideoModel(videoImage: videoImage, videoInfo: videoInfo, videoTitle: videoTitle, videoUrl: videoUrl));
-    });
+      return VideoModel(videoImage: videoImage, videoInfo: videoInfo, videoTitle: videoTitle, videoUrl: videoUrl);
+    }).toList();
   }
 
 }

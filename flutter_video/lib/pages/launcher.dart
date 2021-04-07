@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutter_video/models/main_data.dart';
 import 'package:flutter_video/network/api.dart';
+import 'package:flutter_video/pages/filter_page.dart';
 
 class LauncherFragment extends StatefulWidget {
   @override
@@ -71,35 +72,35 @@ class _LauncherFragmentState extends State<LauncherFragment> {
                   height: 160,
                   margin: EdgeInsets.all(10.0),
                 ),
-                VideoGroupTitle(groupTitle: '热播推荐'),
+                VideoGroupTitle(groupTitle: '热播推荐', targetUrl: '',),
                 Container(
                   margin: EdgeInsets.all(10),
                   child: VideoCardGroup(
                     videoModelList: mainDataModel.hotModelList,
                   ),
                 ),
-                VideoGroupTitle(groupTitle: '电影'),
+                VideoGroupTitle(groupTitle: '电影', targetUrl: mainDataModel.moreUrlList[0]),
                 Container(
                   margin: EdgeInsets.all(10),
                   child: VideoCardGroup(
                     videoModelList: mainDataModel.movieModelList,
                   ),
                 ),
-                VideoGroupTitle(groupTitle: '剧集'),
+                VideoGroupTitle(groupTitle: '剧集', targetUrl: mainDataModel.moreUrlList[1]),
                 Container(
                   margin: EdgeInsets.all(10),
                   child: VideoCardGroup(
                     videoModelList: mainDataModel.tvModelList,
                   ),
                 ),
-                VideoGroupTitle(groupTitle: '综艺'),
+                VideoGroupTitle(groupTitle: '综艺', targetUrl: mainDataModel.moreUrlList[2]),
                 Container(
                   margin: EdgeInsets.all(10),
                   child: VideoCardGroup(
                     videoModelList: mainDataModel.showModelList,
                   ),
                 ),
-                VideoGroupTitle(groupTitle: '动漫'),
+                VideoGroupTitle(groupTitle: '动漫', targetUrl: mainDataModel.moreUrlList[3]),
                 Container(
                   margin: EdgeInsets.all(10),
                   child: VideoCardGroup(
@@ -114,8 +115,9 @@ class _LauncherFragmentState extends State<LauncherFragment> {
 
 class VideoGroupTitle extends StatelessWidget {
   final String groupTitle;
+  final String targetUrl;
 
-  VideoGroupTitle({this.groupTitle});
+  VideoGroupTitle({this.groupTitle, this.targetUrl});
 
   @override
   Widget build(BuildContext context) {
@@ -143,13 +145,16 @@ class VideoGroupTitle extends StatelessWidget {
             ),
             Positioned(
               right: 10,
-              child: GestureDetector(
+              child: targetUrl == '' ? Text('') : GestureDetector(
                 child: Text(
                   '更多>>',
                   style: TextStyle(color: Colors.grey, fontSize: 14),
                 ),
                 onTap: () {
                   //查看更多
+                  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+                    return FilterFragment(url: targetUrl);
+                  }));
                 },
               ),
             )
@@ -198,7 +203,12 @@ class VideoCard extends StatelessWidget {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(10)),
           image: DecorationImage(
-              image: NetworkImage(videoModel.videoImage), fit: BoxFit.fitWidth),
+              image: NetworkImage(videoModel.videoImage),
+              fit: BoxFit.fitWidth,
+              onError: (o, error) {
+
+              }
+          ),
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.2),
