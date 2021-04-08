@@ -5,6 +5,8 @@ import 'package:flutter_video/models/main_data.dart';
 import 'package:flutter_video/network/api.dart';
 import 'package:flutter_video/pages/filter_page.dart';
 
+import 'detail_page.dart';
+
 class LauncherFragment extends StatefulWidget {
   @override
   _LauncherFragmentState createState() => _LauncherFragmentState();
@@ -182,7 +184,14 @@ class VideoCardGroup extends StatelessWidget {
               crossAxisSpacing: 10,
               mainAxisSpacing: 10),
           itemBuilder: (context, index) {
-            return VideoCard(videoModel: videoModelList[index]);
+            return GestureDetector(
+              child: VideoCard(videoModel: videoModelList[index]),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+                  return DetailFragment(videoModelList[index].videoUrl);
+                }));
+              },
+            );
           },
           itemCount: videoModelList.length,
           shrinkWrap: true,

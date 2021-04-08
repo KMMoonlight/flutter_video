@@ -10,3 +10,9 @@ Future<String> getFilterPageData(String targetUrl) async {
   var response = await DioClient.getInstance().get(targetUrl);
   return response.data.toString();
 }
+
+
+Future<String> getDetailPageData(String targetUrl) async {
+  var response = await DioClient.getInstance().get(targetUrl);
+  return response.data.toString();
+}

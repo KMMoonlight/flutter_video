@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_video/models/filter_data.dart';
 import 'package:flutter_video/network/api.dart';
+import 'package:flutter_video/pages/detail_page.dart';
 
+// ignore: must_be_immutable
 class FilterFragment extends StatefulWidget {
   String url = '';
 
@@ -268,6 +270,9 @@ class VideoCardList extends StatelessWidget {
           ),
           onTap: () {
             // 跳转到详情页
+            Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+              return DetailFragment(currentModel.videoUrl);
+            }));
           },
         );
       },

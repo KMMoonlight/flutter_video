@@ -36,6 +36,8 @@ dependencies:
   html: ^0.15.0
   # 图片缓存库
   cached_network_image: ^3.0.0
+  # Web View库
+  webview_flutter: ^2.0.4
 
 
 
